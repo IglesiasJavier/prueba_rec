@@ -78,7 +78,8 @@
                               <td>
                                 <div class="d-flex px-2 py-1">
                                   <div>
-                                    <img src="{{asset('assets/img/illustrations/chat.png')}}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                    <img v-bind:src="require('/assets/img/illustrations/chat.png')" />
+                                    <img src="" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                                   </div>
                                   <div class="d-flex flex-column justify-content-center">
                                     <h6 class="mb-0 text-sm">adds essdea sda</h6>
