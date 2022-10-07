@@ -37,8 +37,8 @@ class AuthController extends Controller
     {
         $requestData = $request->all();
         $validator = Validator::make($requestData,[
-            'email' => 'email|required',
-            'password' => 'required'
+            'email' => 'email|required|exists:users,email|max:50',
+            'password' => 'required|max:18|min:2'
         ]);
 
         if ($validator->fails()) {
@@ -48,7 +48,7 @@ class AuthController extends Controller
         }
 
         if(! auth()->attempt($requestData)){
-            return response()->json(['error' => 'Las credenciales proporcinadas no son correctas'], 401);
+            return response()->json(['errors' => ['error'=> 'Las credenciales proporcinadas no son correctas'] ], 401);
         }
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
