@@ -19,29 +19,35 @@
               <div class="collapse navbar-collapse" id="navigation">
                 <ul class="navbar-nav mx-auto">
                   <li class="nav-item">
-                     <router-link :to="{name:'Dashboard'}"  class="nav-link d-flex align-items-center me-2 active">
+                     <router-link :to="{name:'Posts'}"  class="nav-link d-flex align-items-center me-2 active">
               
                       <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
-                      Dashboard
+                      Inicio
                      </router-link>
                   </li>
-                  <li class="nav-item">
+                  <li v-if=loggedUser  class="nav-item">
                     <router-link :to="{name:'Dashboard'}"  class="nav-link me-2">
                       <i class="fa fa- opacity-6 text-dark me-1"></i>
-                      Publicaciones
+                      Mis publicaciones
                     </router-link>
                   </li>
-                  <li class="nav-item">
+                  <li  v-if="loggedUser==null"  class="nav-item">
                   <router-link :to="{name:'Register'}"  class="nav-link me-2">
                       <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
                       Registro
                   </router-link>
                   </li>
-                  <li class="nav-item">
+                  <li  v-if="loggedUser==null" class="nav-item">
                     <router-link :to="{name:'Login'}"  class="nav-link me-2">
                       <i class="fas fa-key opacity-6 text-dark me-1"></i>
                      Inciar sesión
                     </router-link>
+                  </li>
+                   <li v-if=loggedUser class="nav-item">
+                    <a href="javascript:void(0)"  @click="logout()"  class="nav-link me-2">
+                      <i class="fas fa-right-from-bracket opacity-6 text-dark me-1"></i>
+                     Cerrar sesion 
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -55,9 +61,31 @@
 </template>
 
 <script>
+  import Auth from '../../Auth.js';
+
     export default {
+        name: 'mainNav',
+        data() {
+            return {
+                loggedUser: this.auth.user
+            };
+        },
         mounted() {
-            console.log('Component mounted.')
+            console.log(this.auth.user);
+        },
+        methods: {
+            logout() {
+                this.axios.post('http://127.0.0.1:8000/api/logout')
+                .then(({data}) => {
+                    Auth.logout(); //reset local storage
+                    this.$router.push("/");
+                    
+                })
+                .catch((error) => {
+                  console.log(error.status);
+                    console.log(error);
+                });
+            }
         }
     }
 </script>
