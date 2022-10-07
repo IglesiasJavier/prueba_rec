@@ -38,7 +38,11 @@ Vue.component('main-footer-component', require('./components/layout/footer.vue')
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
  import router from './routes';
-
+ import axios from 'axios';
+ import VueAxios from 'vue-axios';
+ import Auth from './Auth.js';
+ Vue.prototype.auth = Auth;
+Vue.use(VueAxios, axios);
 const app = new Vue({
     el: '#app',
     router,
