@@ -15,14 +15,14 @@ class AuthController extends Controller
     {
         $requestData = $request->all();
         $validator = Validator::make($requestData,[
-            'name' => 'required|max:55',
-            'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed'
+            'name' => 'bail|required|max:55|min:2',
+            'email' => 'bail|email|required|unique:users,email|max:50',
+            'password' => 'bail|required|confirmed|max:18|min:4'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->errors()
+                'errors' => $validator->errors()->first()
             ], 422);
         }
 

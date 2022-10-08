@@ -15,31 +15,35 @@
             </div>
             <div class="card-body">
               <form role="form" class="text-start">
-                <div class="input-group input-group-outline my-3">
-                  <label class="form-label">Nombre</label>
-                  <input type="email" class="form-control" />
+                <div class="input-grou input-group-outline my-3">
+                  <input placeholder="Nombre"  v-model="user.name" type="email" class="form-control" />
                 </div>
-                <div class="input-group input-group-outline my-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" />
+                <div class="input-grou input-group-outline my-3">
+                 
+                  <input type="email" placeholder="Email" v-model="user.email" class="form-control" />
                 </div>
-                <div class="input-group input-group-outline mb-3">
-                  <label class="form-label">Password</label>
-                  <input type="password" class="form-control" />
+                <div class="input-grou input-group-outline mb-3">
+    
+                  <input type="password"  placeholder="password" v-model="user.password" class="form-control" />
                 </div>
-                <div class="input-group input-group-outline mb-3">
-                  <label class="form-label">confirmar password</label>
-                  <input type="password" name="password-confirm" class="form-control" />
+                <div class="input-grou input-group-outline mb-3">
+                 
+                  <input type="password"  placeholder="confirmar password" v-model="user.password_confirmation" class="form-control" />
                 </div>
+                 <div  v-if="errors.errors" class="alert alert-danger text-white" role="alert">
+                      <strong>¡Error! </strong>{{errors.errors}}
+                  </div>
                 <div class="text-center">
-                  <button
+                  <button @click="register()"
                     type="button"
                     class="btn bg-gradient-primary w-100 my-4 mb-2"
-                  >Iniciar sesión</button>
+                  >Registrarme</button>
                 </div>
                 <p class="mt-4 text-sm text-center">
-                  Registrarme
-                  <a href class="text-primary text-gradient font-weight-bold">Registrarme</a>
+                  ¿Ya tienes una cuenta? 
+                  <router-link :to="{name:'Login'}" class="text-primary text-gradient font-weight-bold">
+                Iniciar sesión
+                  </router-link>
                 </p>
               </form>
             </div>
@@ -62,6 +66,30 @@ export default {
   components: {
         mainNav, 
       },
+data() {
+        return {
+             user: {
+                 name: '',
+                 email: '',
+                 password: '',
+                 password_confirmation: ''
+                },
+                errors: []
+            };
+        },
+          methods: {
+            register() {
+                console.log(this.user);
+                this.axios.post('http://127.0.0.1:8000/api/register', this.user)
+                    .then(({data}) => {
+                        this.$router.push('/login');
+                    })
+                    .catch((error) => {
+                       this.errors = error.response.data;
+                        console.log(errors[0]);
+                    });
+            }
+        },
   mounted() {
     console.log("Component mounted.");
   }
