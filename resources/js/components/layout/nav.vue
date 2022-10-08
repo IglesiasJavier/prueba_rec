@@ -78,7 +78,7 @@
                 this.axios.post('http://127.0.0.1:8000/api/logout')
                 .then(({data}) => {
                     Auth.logout(); //reset local storage
-                    this.$router.push("/");
+                    this.$router.push("/login");
                     
                 })
                 .catch((error) => {
